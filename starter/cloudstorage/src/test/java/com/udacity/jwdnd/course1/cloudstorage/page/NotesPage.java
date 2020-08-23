@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class NotesPage {
 
-    public static final String endpoint = "/home#nav-notes";
+    public static final String endpoint = "/home";
 
     private final WebDriver driver;
 
