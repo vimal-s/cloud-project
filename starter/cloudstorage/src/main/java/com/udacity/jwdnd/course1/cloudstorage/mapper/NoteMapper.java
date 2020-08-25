@@ -9,11 +9,12 @@ import java.util.List;
 public interface NoteMapper {
 
     @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{title}, #{description}, #{userId})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "id")   // todo: why do I need this?
     public int save(Note note);
 
     @Select("SELECT * FROM NOTES")
     @Results({
+            @Result(column = "noteid", property = "id"),
             @Result(column = "notetitle", property = "title"),
             @Result(column = "notedescription", property = "description")
     })

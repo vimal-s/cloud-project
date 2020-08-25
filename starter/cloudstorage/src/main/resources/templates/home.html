@@ -77,8 +77,9 @@
                                 <tbody>
                                     <tr th:each="note : ${notes}">
                                         <td>
-                                            <button type="button" class="btn btn-success">Edit</button>
-                                            <a class="btn btn-danger">Delete</a>
+                                            <button type="button" class="btn btn-success" th:onclick="showNoteModal([[${note.id}]], '[[${note.title}]]', '[[${note.description}]]')">Edit</button>
+                                            <!--todo: how to make delete request instead of get-->
+                                            <a class="btn btn-danger" th:href="@{/home/} + ${note.id}" method="delete">Delete</a>
                                         </td>
                                         <th scope="row" id="title" th:text="${note.title}">Example Note Title</th>
                                         <td id="description" th:text="${note.description}">Example Note Description </td>
@@ -194,6 +195,7 @@
         <script type="text/javascript">
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
+                console.log(noteId + noteTitle + noteDescription);
                 $('#note-id').val(noteId ? noteId : '');
                 $('#note-title').val(noteTitle ? noteTitle : '');
                 $('#note-description').val(noteDescription ? noteDescription : '');

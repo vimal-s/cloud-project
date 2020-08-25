@@ -18,13 +18,13 @@ public class NotesPage {
     @FindBy(id = "description")
     private WebElement savedNoteDescription;
 
-    @FindBy(className = "btn-success")
+    @FindBy(css = "#userTable .btn-success")
     private WebElement editNoteButton;
 
-    @FindBy(className = "btn-danger")
+    @FindBy(css = "#userTable .btn-danger")
     private WebElement deleteNoteButton;
 
-    @FindBy(className = "btn-info")
+    @FindBy(css = "#nav-notes .btn-info")
     private WebElement createNoteButton;
 
     @FindBy(id = "note-title")
@@ -33,7 +33,7 @@ public class NotesPage {
     @FindBy(id = "note-description")
     private WebElement noteDescription;
 
-    @FindBy(className = "btn-primary")
+    @FindBy(css = "#noteModal .btn-primary")
     private WebElement saveNoteButton;
 
     private static void focusToNotesTab(WebDriver driver) throws InterruptedException {
@@ -44,15 +44,14 @@ public class NotesPage {
 
     public NotesPage(WebDriver driver) throws InterruptedException {
         this.driver = driver;
+        Thread.sleep(1000);
         focusToNotesTab(driver);
         PageFactory.initElements(driver, this);
     }
 
     public void createNote(String title, String description) throws InterruptedException {
-        // todo: do I really need to click this
         createNoteButton.click();
         Thread.sleep(1000);
-
         noteTitle.sendKeys(title);
         noteDescription.sendKeys(description);
         saveNoteButton.click();
@@ -69,14 +68,20 @@ public class NotesPage {
         return savedNoteDescription.getText();
     }
 
-    public void editNote() throws InterruptedException {
+    public void editNote(String title, String description) throws InterruptedException {
+        focusToNotesTab(driver);
         editNoteButton.click();
         Thread.sleep(1000);
-
-        // todo: to be implemented
+        noteTitle.clear();
+        noteTitle.sendKeys(title);
+        noteDescription.clear();
+        noteDescription.sendKeys(description);
+        saveNoteButton.click();
+        Thread.sleep(1000);
     }
 
     public void deleteNote() throws InterruptedException {
+        focusToNotesTab(driver);
         deleteNoteButton.click();
         Thread.sleep(1000);
     }
