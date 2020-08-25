@@ -48,6 +48,7 @@ class CloudStorageApplicationTests {
         NotesPage notesPage = addNote();
         Assertions.assertEquals("Test Note", notesPage.getSavedNoteTitle());
         Assertions.assertEquals("Test Description", notesPage.getSavedNoteDescription());
+        notesPage.deleteNote();
     }
 
     private NotesPage addNote() throws InterruptedException {
@@ -67,6 +68,7 @@ class CloudStorageApplicationTests {
         notesPage.editNote("Edited title", "Edited description");
         Assertions.assertEquals("Edited title", notesPage.getSavedNoteTitle());
         Assertions.assertEquals("Edited description", notesPage.getSavedNoteDescription());
+        notesPage.deleteNote();
     }
 
     @Test

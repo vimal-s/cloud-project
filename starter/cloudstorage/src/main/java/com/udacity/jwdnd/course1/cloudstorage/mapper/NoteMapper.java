@@ -10,7 +10,7 @@ public interface NoteMapper {
 
     @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{title}, #{description}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "id")   // todo: why do I need this?
-    public int save(Note note);
+    public void save(Note note);
 
     @Select("SELECT * FROM NOTES")
     @Results({
@@ -19,4 +19,10 @@ public interface NoteMapper {
             @Result(column = "notedescription", property = "description")
     })
     public List<Note> findAll();
+
+    @Delete("DELETE FROM NOTES WHERE noteid = #{id}")
+    public void delete(int id);
+
+    @Update("UPDATE NOTES SET notetitle = #{title}, notedescription = #{description} WHERE noteid = #{id}")
+    void update(Note note);
 }

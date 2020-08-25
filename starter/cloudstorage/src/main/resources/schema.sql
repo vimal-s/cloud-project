@@ -34,3 +34,5 @@ CREATE TABLE IF NOT EXISTS CREDENTIALS (
     userid INT,
     foreign key (userid) references USERS(userid)
 );
+
+INSERT INTO USERS (username) VALUES ('admin');

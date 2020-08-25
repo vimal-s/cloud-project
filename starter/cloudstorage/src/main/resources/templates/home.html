@@ -99,7 +99,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form action="#" method="POST" th:href="@{/home}" th:object="${note}">
-                                            <input type="hidden" name="noteId" id="note-id">
+                                            <input type="hidden" name="noteId" id="note-id" th:field="${note.id}">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
                                                 <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required th:field="*{title}">
@@ -195,8 +195,9 @@
         <script type="text/javascript">
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
+            console.log("hey there");
                 console.log(noteId + noteTitle + noteDescription);
-                $('#note-id').val(noteId ? noteId : '');
+                $('#note-id').val(noteId ? noteId : '0');
                 $('#note-title').val(noteTitle ? noteTitle : '');
                 $('#note-description').val(noteDescription ? noteDescription : '');
                 $('#noteModal').modal('show');

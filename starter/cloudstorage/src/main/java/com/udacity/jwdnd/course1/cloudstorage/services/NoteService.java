@@ -20,13 +20,20 @@ public class NoteService {
     }
 
     public void save(Note note) {
+        if (note.getId() != 0) {
+            mapper.update(note);
+            return;
+        }
         // todo: find user id first
         note.setUserId(1);
         mapper.save(note);
-        logger.info(mapper.findAll().get(0).toString());
     }
 
     public List<Note> findAll() {
         return mapper.findAll();
+    }
+
+    public void delete(int id) {
+        mapper.delete(id);
     }
 }
