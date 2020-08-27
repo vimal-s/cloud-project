@@ -1,9 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-import org.apache.ibatis.annotations.Delete;
+import com.udacity.jwdnd.course1.cloudstorage.service.NoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,25 +22,19 @@ public class NoteController {
         this.service = service;
     }
 
-    @GetMapping()
-    public String getNotes(Note note, Model model) {
-        model.addAttribute("notes", service.findAll());
-        return "home";
-    }
-
-    @PostMapping()
+    @PostMapping("/note")
     public String saveNote(Note note, Model model) {
         logger.info("post id: " + note);
         service.save(note);
-        model.addAttribute("notes", service.findAll());
-        return "home";
+//        model.addAttribute("notes", service.findAll());
+        return "redirect:http://localhost:8080/home";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/note/{id}")
     public String deleteNote(@PathVariable int id, Note note, Model model) {
         logger.info("id is: " + id);
         service.delete(id);
-        model.addAttribute("notes", service.findAll());
-        return "redirect:";
+//        model.addAttribute("notes", service.findAll());
+        return "redirect:http://localhost:8080/home";
     }
 }

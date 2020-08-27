@@ -85,4 +85,5 @@ public class NotesPage {
         deleteNoteButton.click();
         Thread.sleep(1000);
     }
+
 }
