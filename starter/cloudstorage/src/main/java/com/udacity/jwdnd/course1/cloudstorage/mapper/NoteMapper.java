@@ -12,13 +12,13 @@ public interface NoteMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")   // todo: why do I need this?
     public void save(Note note);
 
-    @Select("SELECT * FROM NOTES")
+    @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
     @Results({
             @Result(column = "noteid", property = "id"),
             @Result(column = "notetitle", property = "title"),
             @Result(column = "notedescription", property = "description")
     })
-    public List<Note> findAll();
+    public List<Note> findByUserId(int userId);
 
     @Delete("DELETE FROM NOTES WHERE noteid = #{id}")
     public void delete(int id);

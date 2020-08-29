@@ -1,6 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.page.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.page.NotesPage;
+import com.udacity.jwdnd.course1.cloudstorage.page.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,11 +26,18 @@ public class NotesSectionTest {
     @BeforeAll
     static void beforeAll() {
         WebDriverManager.chromedriver().setup();
+
     }
 
     @BeforeEach
     public void beforeEach() throws InterruptedException {
         this.driver = new ChromeDriver();
+        driver.get(DOMAIN + ":" + PORT + SIGNUP_ENDPOINT);
+        SignupPage signupPage = new SignupPage(driver);
+        signupPage.signup("a", "a", LOGIN_USERNAME, LOGIN_PASSWORD);
+        driver.get(DOMAIN + ":" + PORT + LOGIN_ENDPOINT);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
         driver.get(DOMAIN + ":" + PORT + APP_ENDPOINT);
         notesPage = new NotesPage(driver);
         notesPage.createNote(NOTE_TITLE, NOTE_DESCRIPTION);

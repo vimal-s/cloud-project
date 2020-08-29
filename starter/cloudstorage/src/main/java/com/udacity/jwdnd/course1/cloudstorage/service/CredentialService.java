@@ -15,16 +15,18 @@ import java.util.List;
 public class CredentialService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final CredentialMapper mapper;
+    private final CredentialMapper credentialMapper;
     private final EncryptionService encryptionService;
+    private final UserService userService;
 
-    public CredentialService(CredentialMapper mapper, EncryptionService encryptionService) {
-        this.mapper = mapper;
+    public CredentialService(CredentialMapper credentialMapper, EncryptionService encryptionService, UserService userService) {
+        this.credentialMapper = credentialMapper;
         this.encryptionService = encryptionService;
+        this.userService = userService;
     }
 
-    public List<Credential> findAll() {
-        List<Credential> credentials = mapper.findAll();
+    public List<Credential> findAllByUser() {
+        List<Credential> credentials = credentialMapper.findByUserId(userService.getCurrentUserId());
         credentials.forEach(credential -> credential.setPassword(encryptionService.decryptValue(credential.getPassword(), credential.getSalt())));
         return credentials;
     }
@@ -35,13 +37,12 @@ public class CredentialService {
         credential.setPassword(encodedPassword);
 
         if (credential.getId() != 0) {
-            mapper.update(credential);
+            credentialMapper.update(credential);
             return;
         }
 
-        // todo: find userId, replace this
-        credential.setUserId(1);
-        mapper.save(credential);
+        credential.setUserId(userService.getCurrentUserId());
+        credentialMapper.save(credential);
     }
 
     private String getSalt() {
@@ -55,6 +56,6 @@ public class CredentialService {
     }
 
     public void delete(int id) {
-        mapper.delete(id);
+        credentialMapper.delete(id);
     }
 }

@@ -1,13 +1,13 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
-public class Credential {
+public class User {
 
     private int id;
-    private String url;
     private String username;
-    private String salt;
     private String password;
-    private int userId;
+    private String salt;
+    private String firstname;
+    private String lastname;
 
     public int getId() {
         return id;
@@ -15,14 +15,6 @@ public class Credential {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getUsername() {
@@ -33,14 +25,6 @@ public class Credential {
         this.username = username;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -49,23 +33,39 @@ public class Credential {
         this.password = password;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     @Override
     public String toString() {
-        return "Credential{" +
+        return "User{" +
                 "id=" + id +
-                ", url='" + url + '\'' +
                 ", username='" + username + '\'' +
-                ", salt='" + salt + '\'' +
                 ", password='" + password + '\'' +
-                ", userId=" + userId +
+                ", salt='" + salt + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 '}';
     }
 }

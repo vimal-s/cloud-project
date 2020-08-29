@@ -15,13 +15,13 @@ public interface CredentialMapper {
     @Update("UPDATE CREDENTIALS SET url = #{url}, username = #{username}, password = #{password}, key = #{salt} WHERE credentialid = #{id}")
     public void update(Credential credential);
 
-    @Select("SELECT * FROM CREDENTIALS")
+    @Select("SELECT * FROM CREDENTIALS WHERE userid = #{userId}")
     @Results({
             @Result(column = "credentialid", property = "id"),
             @Result(column = "key", property = "salt"),
             @Result(column = "userid", property = "userId")
     })
-    public List<Credential> findAll();
+    public List<Credential> findByUserId(int userId);
 
     @Delete("DELETE FROM CREDENTIALS WHERE credentialid = #{id}")
     public void delete(int id);

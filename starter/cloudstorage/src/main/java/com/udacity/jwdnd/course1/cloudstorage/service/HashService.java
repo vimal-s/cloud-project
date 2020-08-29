@@ -13,9 +13,11 @@ import java.util.Base64;
 
 @Component
 public class HashService {
-    private Logger logger = LoggerFactory.getLogger(HashService.class);
+    private final Logger logger = LoggerFactory.getLogger(HashService.class);
 
     public String getHashedValue(String data, String salt) {
+
+        logger.info("data: " + data + " salt: " + salt);
         byte[] hashedValue = null;
 
         KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), 5000, 128);

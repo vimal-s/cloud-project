@@ -12,6 +12,9 @@ public class NotesPage {
 
     private final WebDriver driver;
 
+    @FindBy(css = "#logoutDiv .btn-secondary")
+    private WebElement logoutButton;
+
     @FindBy(id = "title")
     private WebElement savedNoteTitle;
 
@@ -86,4 +89,8 @@ public class NotesPage {
         Thread.sleep(1000);
     }
 
+    public  void logout() throws InterruptedException {
+        logoutButton.click();
+        Thread.sleep(1000);
+    }
 }

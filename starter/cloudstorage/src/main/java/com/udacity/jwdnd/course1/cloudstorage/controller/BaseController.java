@@ -23,8 +23,8 @@ public class BaseController {
 
     @GetMapping
     public String getAll(Note note, Credential credential, Model model) {
-        model.addAttribute("notes", noteService.findAll());
-        model.addAttribute("credentials", credentialService.findAll());
+        model.addAttribute("notes", noteService.findAllByUser());
+        model.addAttribute("credentials", credentialService.findAllByUser());
         return "home";
     }
 }

@@ -6,10 +6,12 @@ public class Constant {
     public final static String PORT = "8080";
 
     public final static String LOGIN_ENDPOINT = "/login";
+    public final static String LOGIN_PAGE_TITLE = "Login Page";
     public final static String LOGIN_USERNAME = "guest";
     public final static String LOGIN_PASSWORD = "this-is-a-bad-password";
 
     public final static String SIGNUP_ENDPOINT = "/signup";
+    public final static String SIGNUP_PAGE_TITLE = "Signup Page";
     public final static String SIGNUP_USERNAME = "guest";
     public final static String SIGNUP_PASSWORD = "this-is-a-bad-password";
     public final static String SIGNUP_FIRSTNAME = "joe";

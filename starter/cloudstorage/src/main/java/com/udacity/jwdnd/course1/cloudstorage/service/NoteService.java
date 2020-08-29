@@ -12,28 +12,29 @@ import java.util.List;
 public class NoteService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final NoteMapper noteMapper;
+    private final UserService userService;
 
-    private final NoteMapper mapper;
-
-    public NoteService(NoteMapper mapper) {
-        this.mapper = mapper;
+    public NoteService(NoteMapper noteMapper, UserService userService) {
+        this.noteMapper = noteMapper;
+        this.userService = userService;
     }
 
     public void save(Note note) {
         if (note.getId() != 0) {
-            mapper.update(note);
+            noteMapper.update(note);
             return;
         }
-        // todo: find user id first
-        note.setUserId(1);
-        mapper.save(note);
+
+        note.setUserId(userService.getCurrentUserId());
+        noteMapper.save(note);
     }
 
-    public List<Note> findAll() {
-        return mapper.findAll();
+    public List<Note> findAllByUser() {
+        return noteMapper.findByUserId(userService.getCurrentUserId());
     }
 
     public void delete(int id) {
-        mapper.delete(id);
+        noteMapper.delete(id);
     }
 }
