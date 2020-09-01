@@ -11,33 +11,39 @@ import org.springframework.stereotype.Service;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationService authenticationService;
+  private final AuthenticationService authenticationService;
 
-    public SecurityConfig(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
+  public SecurityConfig(AuthenticationService authenticationService) {
+    this.authenticationService = authenticationService;
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationService);
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.authenticationProvider(authenticationService);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/signup", "/css/**", "/js/**", "/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-//                .failureForwardUrl("/login")  // todo: problem was i was using this so login?error was being redirected when throwing error
-                .permitAll()
-                .defaultSuccessUrl("/home")
-                .and()
-                .logout().permitAll()
-                .and()
-                .csrf().disable()
-                .headers().frameOptions().disable();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/signup", "/css/**", "/js/**", "/h2-console/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        //                .failureForwardUrl("/login")  // todo: problem was i was using this so
+        // login?error was being redirected when throwing error
+        .permitAll()
+        .defaultSuccessUrl("/home")
+        .and()
+        .logout()
+        .permitAll()
+        .and()
+        .csrf()
+        .disable()
+        .headers()
+        .frameOptions()
+        .disable();
+  }
 }

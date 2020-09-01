@@ -8,21 +8,23 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{title}, #{description}, #{userId})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")   // todo: why do I need this?
-    public void save(Note note);
+  @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
+  @Results({
+          @Result(column = "noteid", property = "id"),
+          @Result(column = "notetitle", property = "title"),
+          @Result(column = "notedescription", property = "description")
+  })
+  public List<Note> findByUserId(int userId);
 
-    @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
-    @Results({
-            @Result(column = "noteid", property = "id"),
-            @Result(column = "notetitle", property = "title"),
-            @Result(column = "notedescription", property = "description")
-    })
-    public List<Note> findByUserId(int userId);
+  @Insert(
+      "INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{title}, #{description}, #{userId})")
+  @Options(useGeneratedKeys = true, keyProperty = "id") // todo: why do I need this?
+  public void save(Note note);
 
-    @Delete("DELETE FROM NOTES WHERE noteid = #{id}")
-    public void delete(int id);
+  @Update(
+          "UPDATE NOTES SET notetitle = #{title}, notedescription = #{description} WHERE noteid = #{id}")
+  void update(Note note);
 
-    @Update("UPDATE NOTES SET notetitle = #{title}, notedescription = #{description} WHERE noteid = #{id}")
-    void update(Note note);
+  @Delete("DELETE FROM NOTES WHERE noteid = #{id}")
+  public void delete(int id);
 }

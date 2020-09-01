@@ -2,70 +2,80 @@ package com.udacity.jwdnd.course1.cloudstorage.model;
 
 public class Credential {
 
-    private int id;
-    private String url;
-    private String username;
-    private String salt;
-    private String password;
-    private int userId;
+  private int id;
+  private String url;
+  private String username;
+  private String salt;
+  private String password;
+  private int userId;
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public String getUrl() {
-        return url;
-    }
+  public String getUrl() {
+    return url;
+  }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getSalt() {
-        return salt;
-    }
+  public String getSalt() {
+    return salt;
+  }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
+  public void setSalt(String salt) {
+    this.salt = salt;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public int getUserId() {
-        return userId;
-    }
+  public int getUserId() {
+    return userId;
+  }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+  public void setUserId(int userId) {
+    this.userId = userId;
+  }
 
-    @Override
-    public String toString() {
-        return "Credential{" +
-                "id=" + id +
-                ", url='" + url + '\'' +
-                ", username='" + username + '\'' +
-                ", salt='" + salt + '\'' +
-                ", password='" + password + '\'' +
-                ", userId=" + userId +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Credential{"
+        + "id="
+        + id
+        + ", url='"
+        + url
+        + '\''
+        + ", username='"
+        + username
+        + '\''
+        + ", salt='"
+        + salt
+        + '\''
+        + ", password='"
+        + password
+        + '\''
+        + ", userId="
+        + userId
+        + '}';
+  }
 }

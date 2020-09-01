@@ -16,42 +16,44 @@ import java.util.ArrayList;
 @Service
 public class AuthenticationService implements AuthenticationProvider {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final UserService userService;
-    private final HashService hashService;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final UserService userService;
+  private final HashService hashService;
 
-    public AuthenticationService(UserService userService, HashService hashService) {
-        this.userService = userService;
-        this.hashService = hashService;
-    }
+  public AuthenticationService(UserService userService, HashService hashService) {
+    this.userService = userService;
+    this.hashService = hashService;
+  }
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        User user = userService.find(username);
-        if (user == null) {
-            logger.info("Error should be thrown now");
-            // todo: how is spring handling this and adding ?error param to url
-            throw new UsernameNotFoundException("Username not found.");
-        }
-        logger.info("user from db: " + user);
-        logger.info("user to login: " + authentication.getName() + " " + authentication.getCredentials());
-        String encodedValue = hashService.getHashedValue((String) authentication.getCredentials(), user.getSalt());
-        logger.info("hashedVal: " + encodedValue);
-        if (user.getPassword().equals(encodedValue)) {
-            logger.info("match found");
-            // todo: maybe encoded password should be used
-            return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
-        }
-        throw new BadCredentialsException("match not found");
-//        return null;
+  @Override
+  public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    String username = authentication.getName();
+    String password = authentication.getCredentials().toString();
+    User user = userService.find(username);
+    if (user == null) {
+      logger.info("Error should be thrown now");
+      // todo: how is spring handling this and adding ?error param to url
+      throw new UsernameNotFoundException("Username not found.");
     }
+    logger.info("user from db: " + user);
+    logger.info(
+        "user to login: " + authentication.getName() + " " + authentication.getCredentials());
+    String encodedValue =
+        hashService.getHashedValue((String) authentication.getCredentials(), user.getSalt());
+    logger.info("hashedVal: " + encodedValue);
+    if (user.getPassword().equals(encodedValue)) {
+      logger.info("match found");
+      // todo: maybe encoded password should be used
+      return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+    }
+    throw new BadCredentialsException("match not found");
+    //        return null;
+  }
 
-    @Override
-    public boolean supports(Class<?> aClass) {
-        boolean equals = UsernamePasswordAuthenticationToken.class.equals(aClass);
-        logger.info("supports: " + equals);
-        return equals;
-    }
+  @Override
+  public boolean supports(Class<?> aClass) {
+    boolean equals = UsernamePasswordAuthenticationToken.class.equals(aClass);
+    logger.info("supports: " + equals);
+    return equals;
+  }
 }

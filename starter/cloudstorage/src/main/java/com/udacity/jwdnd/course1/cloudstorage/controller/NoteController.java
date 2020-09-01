@@ -15,26 +15,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/home")
 public class NoteController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final NoteService service;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final NoteService service;
 
-    public NoteController(NoteService service) {
-        this.service = service;
-    }
+  public NoteController(NoteService service) {
+    this.service = service;
+  }
 
-    @PostMapping("/note")
-    public String saveNote(Note note, Model model) {
-        logger.info("post id: " + note);
-        service.save(note);
-//        model.addAttribute("notes", service.findAll());
-        return "redirect:http://localhost:8080/home";
-    }
+  @PostMapping("/note")
+  public String saveNote(Note note, Model model) {
+    logger.info("post id: " + note);
+    service.save(note);
+    //        model.addAttribute("notes", service.findAll());
+//    return "redirect:http://localhost:8080/home";
+    return "result";
+  }
 
-    @GetMapping("/note/{id}")
-    public String deleteNote(@PathVariable int id, Note note, Model model) {
-        logger.info("id is: " + id);
-        service.delete(id);
-//        model.addAttribute("notes", service.findAll());
-        return "redirect:http://localhost:8080/home";
-    }
+  @GetMapping("/note/{id}")
+  public String deleteNote(@PathVariable int id, Note note, Model model) {
+    logger.info("id is: " + id);
+    service.delete(id);
+    //        model.addAttribute("notes", service.findAll());
+//    return "redirect:http://localhost:8080/home";
+    return "result";
+  }
 }

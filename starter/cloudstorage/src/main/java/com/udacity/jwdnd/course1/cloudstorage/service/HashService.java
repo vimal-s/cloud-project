@@ -13,21 +13,21 @@ import java.util.Base64;
 
 @Component
 public class HashService {
-    private final Logger logger = LoggerFactory.getLogger(HashService.class);
+  private final Logger logger = LoggerFactory.getLogger(HashService.class);
 
-    public String getHashedValue(String data, String salt) {
+  public String getHashedValue(String data, String salt) {
 
-        logger.info("data: " + data + " salt: " + salt);
-        byte[] hashedValue = null;
+    logger.info("data: " + data + " salt: " + salt);
+    byte[] hashedValue = null;
 
-        KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), 5000, 128);
-        try {
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            hashedValue = factory.generateSecret(spec).getEncoded();
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-            logger.error(e.getMessage());
-        }
-
-        return Base64.getEncoder().encodeToString(hashedValue);
+    KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), 5000, 128);
+    try {
+      SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+      hashedValue = factory.generateSecret(spec).getEncoded();
+    } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+      logger.error(e.getMessage());
     }
+
+    return Base64.getEncoder().encodeToString(hashedValue);
+  }
 }

@@ -11,30 +11,30 @@ import java.util.List;
 @Service
 public class NoteService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final NoteMapper noteMapper;
-    private final UserService userService;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final NoteMapper noteMapper;
+  private final UserService userService;
 
-    public NoteService(NoteMapper noteMapper, UserService userService) {
-        this.noteMapper = noteMapper;
-        this.userService = userService;
+  public NoteService(NoteMapper noteMapper, UserService userService) {
+    this.noteMapper = noteMapper;
+    this.userService = userService;
+  }
+
+  public void save(Note note) {
+    if (note.getId() != 0) {
+      noteMapper.update(note);
+      return;
     }
 
-    public void save(Note note) {
-        if (note.getId() != 0) {
-            noteMapper.update(note);
-            return;
-        }
+    note.setUserId(userService.getCurrentUserId());
+    noteMapper.save(note);
+  }
 
-        note.setUserId(userService.getCurrentUserId());
-        noteMapper.save(note);
-    }
+  public List<Note> findAll() {
+    return noteMapper.findByUserId(userService.getCurrentUserId());
+  }
 
-    public List<Note> findAllByUser() {
-        return noteMapper.findByUserId(userService.getCurrentUserId());
-    }
-
-    public void delete(int id) {
-        noteMapper.delete(id);
-    }
+  public void delete(int id) {
+    noteMapper.delete(id);
+  }
 }

@@ -12,21 +12,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/home")
 public class CredentialController {
 
-    private final CredentialService service;
+  private final CredentialService service;
 
-    public CredentialController(CredentialService service) {
-        this.service = service;
-    }
+  public CredentialController(CredentialService service) {
+    this.service = service;
+  }
 
-    @PostMapping("/credential")
-    public String saveCredential(Credential credential) {
-        service.save(credential);
-        return "redirect:http://localhost:8080/home";
-    }
+  @PostMapping("/credential")
+  public String saveCredential(Credential credential) {
+    service.save(credential);
+//    return "redirect:http://localhost:8080/home";
+    return "result";
+  }
 
-    @GetMapping("/credential/{id}") // todo: change this to delete mapping somehow
-    public String deleteCredential(@PathVariable int id) {
-        service.delete(id);
-        return "redirect:http://localhost:8080/home";
-    }
+  @GetMapping("/credential/{id}") // todo: change this to delete mapping somehow
+  public String deleteCredential(@PathVariable int id) {
+    service.delete(id);
+//    return "redirect:http://localhost:8080/home";
+    return "result";
+  }
 }
