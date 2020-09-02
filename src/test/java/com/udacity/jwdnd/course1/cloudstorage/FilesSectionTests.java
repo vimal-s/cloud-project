@@ -26,7 +26,7 @@ import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class FilesSectionTest {
+public class FilesSectionTests {
 
   private WebDriver driver;
   private FilePage filePage;

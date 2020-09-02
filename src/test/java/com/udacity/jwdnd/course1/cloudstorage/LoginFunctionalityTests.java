@@ -16,8 +16,8 @@ import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-public class NotesSectionTest {
+@SpringBootTest()
+class LoginFunctionalityTests {
 
   private WebDriver driver;
   private NotesPage notesPage;
@@ -28,9 +28,8 @@ public class NotesSectionTest {
   }
 
   @BeforeEach
-  public void setUp() throws InterruptedException {
+  public void setUp() {
     this.driver = new ChromeDriver();
-    login();
   }
 
   @AfterEach
@@ -41,28 +40,35 @@ public class NotesSectionTest {
   }
 
   @Test
-  public void addNoteTest() throws InterruptedException {
+  public void requestRedirectionTest() {
+    driver.get(APP_URL);
+    assertEquals(LOGIN_PAGE_TITLE, driver.getTitle());
+  }
+
+  @Test
+  public void signupAccessibilityTest() {
+    driver.get(SIGNUP_URL);
+    assertEquals(SIGNUP_PAGE_TITLE, driver.getTitle());
+  }
+
+  @Test
+  void accessAfterLoginTest() throws InterruptedException {
+    login();
     addNote();
     assertEquals(NOTE_TITLE, notesPage.getSavedNoteTitle());
     assertEquals(NOTE_DESCRIPTION, notesPage.getSavedNoteDescription());
-    deleteNote();
+    notesPage.deleteNote();
   }
 
   @Test
-  public void editNoteTest() throws InterruptedException {
+  public void accessAfterLogoutTest() throws InterruptedException {
+    login();
     addNote();
-    editNote();
-    assertEquals(NOTE_TITLE_2, notesPage.getSavedNoteTitle());
-    assertEquals(NOTE_DESCRIPTION_2, notesPage.getSavedNoteDescription());
-    deleteNote();
-  }
-
-  @Test
-  public void deleteNoteTest() throws InterruptedException {
-    addNote();
-    deleteNote();
+    notesPage.logout();
+    assertEquals(LOGIN_PAGE_TITLE, driver.getTitle());
     assertThrows(NoSuchElementException.class, notesPage::getSavedNoteTitle);
-    assertThrows(NoSuchElementException.class, notesPage::getSavedNoteDescription);
+    login();
+    notesPage.deleteNote();
   }
 
   private void login() throws InterruptedException {
@@ -76,18 +82,6 @@ public class NotesSectionTest {
     driver.get(APP_URL);
     notesPage = new NotesPage(driver);
     notesPage.createNote(NOTE_TITLE, NOTE_DESCRIPTION);
-    driver.get(APP_URL);
-  }
-
-  private void editNote() throws InterruptedException {
-    driver.get(APP_URL);
-    notesPage.editNote(NOTE_TITLE_2, NOTE_DESCRIPTION_2);
-    driver.get(APP_URL);
-  }
-
-  private void deleteNote() throws InterruptedException {
-    driver.get(APP_URL);
-    notesPage.deleteNote();
     driver.get(APP_URL);
   }
 }

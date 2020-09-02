@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-public class CredentialsSectionTest {
+public class CredentialsSectionTests {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
   private CredentialsPage credentialsPage;

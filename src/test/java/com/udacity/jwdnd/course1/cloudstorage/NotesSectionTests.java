@@ -16,8 +16,8 @@ import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest()
-class CloudStorageApplicationTests {
+@SpringBootTest
+public class NotesSectionTests {
 
   private WebDriver driver;
   private NotesPage notesPage;
@@ -28,8 +28,9 @@ class CloudStorageApplicationTests {
   }
 
   @BeforeEach
-  public void setUp() {
+  public void setUp() throws InterruptedException {
     this.driver = new ChromeDriver();
+    login();
   }
 
   @AfterEach
@@ -40,35 +41,28 @@ class CloudStorageApplicationTests {
   }
 
   @Test
-  public void requestRedirectionTest() {
-    driver.get(APP_URL);
-    assertEquals(LOGIN_PAGE_TITLE, driver.getTitle());
-  }
-
-  @Test
-  public void signupAccessibilityTest() {
-    driver.get(SIGNUP_URL);
-    assertEquals(SIGNUP_PAGE_TITLE, driver.getTitle());
-  }
-
-  @Test
-  void accessAfterLoginTest() throws InterruptedException {
-    login();
+  public void addNoteTest() throws InterruptedException {
     addNote();
     assertEquals(NOTE_TITLE, notesPage.getSavedNoteTitle());
     assertEquals(NOTE_DESCRIPTION, notesPage.getSavedNoteDescription());
-    notesPage.deleteNote();
+    deleteNote();
   }
 
   @Test
-  public void accessAfterLogoutTest() throws InterruptedException {
-    login();
+  public void editNoteTest() throws InterruptedException {
     addNote();
-    notesPage.logout();
-    assertEquals(LOGIN_PAGE_TITLE, driver.getTitle());
+    editNote();
+    assertEquals(NOTE_TITLE_2, notesPage.getSavedNoteTitle());
+    assertEquals(NOTE_DESCRIPTION_2, notesPage.getSavedNoteDescription());
+    deleteNote();
+  }
+
+  @Test
+  public void deleteNoteTest() throws InterruptedException {
+    addNote();
+    deleteNote();
     assertThrows(NoSuchElementException.class, notesPage::getSavedNoteTitle);
-    login();
-    notesPage.deleteNote();
+    assertThrows(NoSuchElementException.class, notesPage::getSavedNoteDescription);
   }
 
   private void login() throws InterruptedException {
@@ -82,6 +76,18 @@ class CloudStorageApplicationTests {
     driver.get(APP_URL);
     notesPage = new NotesPage(driver);
     notesPage.createNote(NOTE_TITLE, NOTE_DESCRIPTION);
+    driver.get(APP_URL);
+  }
+
+  private void editNote() throws InterruptedException {
+    driver.get(APP_URL);
+    notesPage.editNote(NOTE_TITLE_2, NOTE_DESCRIPTION_2);
+    driver.get(APP_URL);
+  }
+
+  private void deleteNote() throws InterruptedException {
+    driver.get(APP_URL);
+    notesPage.deleteNote();
     driver.get(APP_URL);
   }
 }
