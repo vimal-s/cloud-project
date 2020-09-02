@@ -63,11 +63,11 @@ public class File {
   @Override
   public String toString() {
     return "File{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", contentType='" + contentType + '\'' +
-            ", size='" + size + '\'' +
-            ", userId=" + userId +
+              "id=" + id +
+              ", name='" + name + '\'' +
+              ", contentType='" + contentType + '\'' +
+              ", size='" + size + '\'' +
+              ", userId=" + userId +
             '}';
   }
 }

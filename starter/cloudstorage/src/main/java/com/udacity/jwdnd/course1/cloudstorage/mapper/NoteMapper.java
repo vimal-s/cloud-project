@@ -10,19 +10,19 @@ public interface NoteMapper {
 
   @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
   @Results({
-          @Result(column = "noteid", property = "id"),
-          @Result(column = "notetitle", property = "title"),
-          @Result(column = "notedescription", property = "description")
+    @Result(column = "noteid", property = "id"),
+    @Result(column = "notetitle", property = "title"),
+    @Result(column = "notedescription", property = "description")
   })
   public List<Note> findByUserId(int userId);
 
-  @Insert(
-      "INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{title}, #{description}, #{userId})")
-  @Options(useGeneratedKeys = true, keyProperty = "id") // todo: why do I need this?
+  @Insert("INSERT INTO NOTES (notetitle, notedescription, userid)" +
+              "VALUES (#{title}, #{description}, #{userId})")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
   public void save(Note note);
 
-  @Update(
-          "UPDATE NOTES SET notetitle = #{title}, notedescription = #{description} WHERE noteid = #{id}")
+  @Update("UPDATE NOTES SET notetitle = #{title}, notedescription = #{description}" +
+              "WHERE noteid = #{id}")
   void update(Note note);
 
   @Delete("DELETE FROM NOTES WHERE noteid = #{id}")

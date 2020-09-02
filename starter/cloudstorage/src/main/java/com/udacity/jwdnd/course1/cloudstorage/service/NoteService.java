@@ -20,6 +20,10 @@ public class NoteService {
     this.userService = userService;
   }
 
+  public List<Note> findAll() {
+    return noteMapper.findByUserId(userService.getCurrentUserId());
+  }
+
   public void save(Note note) {
     if (note.getId() != 0) {
       noteMapper.update(note);
@@ -28,10 +32,6 @@ public class NoteService {
 
     note.setUserId(userService.getCurrentUserId());
     noteMapper.save(note);
-  }
-
-  public List<Note> findAll() {
-    return noteMapper.findByUserId(userService.getCurrentUserId());
   }
 
   public void delete(int id) {

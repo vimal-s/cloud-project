@@ -41,17 +41,10 @@ public class Note {
 
   @Override
   public String toString() {
-    return "Note{"
-        + "id="
-        + id
-        + ", title='"
-        + title
-        + '\''
-        + ", description='"
-        + description
-        + '\''
-        + ", userId="
-        + userId
-        + '}';
+    return "Note{" + "id=" + id +
+              ", title='" + title + '\'' +
+              ", description='" + description + '\'' +
+              ", userId=" + userId +
+            '}';
   }
 }

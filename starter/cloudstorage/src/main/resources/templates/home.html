@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html id="page" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
-
     <title>Home</title>
 </head>
 <body class="p-3 mb-2 bg-light text-black">
@@ -85,9 +83,7 @@
                                         th:onclick="showNoteModal([[${note.id}]], '[[${note.title}]]', '[[${note.description}]]')">
                                     Edit
                                 </button>
-                                <!--todo: how to make delete request instead of get-->
-                                <a class="btn btn-danger" th:href="@{/home/note/} + ${note.id}"
-                                   method="delete">Delete</a>
+                                <a class="btn btn-danger" th:href="@{/home/note/} + ${note.id}">Delete</a>
                             </td>
                             <th scope="row" id="title" th:text="${note.title}">Example Note Title</th>
                             <td id="description" th:text="${note.description}">Example Note Description</td>
@@ -223,8 +219,6 @@
 <script type="text/javascript">
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
-                console.log('below are the note details');
-                console.log(noteId + noteTitle + noteDescription);
                 $('#note-id').val(noteId ? noteId : '0');
                 $('#note-title').val(noteTitle ? noteTitle : '');
                 $('#note-description').val(noteDescription ? noteDescription : '');
@@ -233,15 +227,12 @@
 
             // For opening the credentials modal
             function showCredentialModal(credentialId, url, username, password) {
-                console.log('below are the credential details');
-                console.log(credentialId + ' ' + url + ' ' + username + ' ' + password);
                 $('#credential-id').val(credentialId ? credentialId : '0');
                 $('#credential-url').val(url ? url : '');
                 $('#credential-username').val(username ? username : '');
                 $('#credential-password').val(password ? password : '');
                 $('#credentialModal').modal('show');
             }
-
 </script>
 </body>
 </html>

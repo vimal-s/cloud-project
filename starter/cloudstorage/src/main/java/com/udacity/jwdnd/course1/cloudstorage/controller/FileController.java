@@ -24,28 +24,20 @@ public class FileController {
   }
 
   @PostMapping("/file")
-  // todo: see the function of request param
-  // increase file upload size or handle exception
   public String save(@RequestParam("fileUpload") MultipartFile multipartFile) throws IOException {
     File file = new File();
     file.setContentType(multipartFile.getContentType());
     file.setName(multipartFile.getOriginalFilename());
     file.setData(multipartFile.getBytes());
     file.setSize(String.valueOf(multipartFile.getSize()));
-
-    logger.info("Save request for: " + file);
     fileService.save(file);
-    logger.info("Save request complete for: " + file);
-//    return "redirect:http://localhost:8080/home";
     return "result";
   }
 
   @GetMapping("/getFile/{id}")
   @ResponseBody
   public ResponseEntity<byte[]> find(@PathVariable int id) {
-    logger.info("Find request: " + id);
     File file = fileService.find(id);
-    logger.info(file.toString());
     return ResponseEntity.ok()
         .contentType(MediaType.parseMediaType(file.getContentType()))
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
@@ -54,10 +46,7 @@ public class FileController {
 
   @GetMapping("/deleteFile/{id}")
   public String delete(@PathVariable int id) {
-    logger.info("Delete request for: " + id);
     fileService.delete(id);
-    logger.info("Delete request complete for: " + id);
-//    return "redirect:http://localhost:8080/home";
     return "result";
   }
 }

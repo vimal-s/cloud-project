@@ -5,7 +5,6 @@ import com.udacity.jwdnd.course1.cloudstorage.service.NoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,20 +22,14 @@ public class NoteController {
   }
 
   @PostMapping("/note")
-  public String saveNote(Note note, Model model) {
-    logger.info("post id: " + note);
+  public String saveNote(Note note) {
     service.save(note);
-    //        model.addAttribute("notes", service.findAll());
-//    return "redirect:http://localhost:8080/home";
     return "result";
   }
 
   @GetMapping("/note/{id}")
-  public String deleteNote(@PathVariable int id, Note note, Model model) {
-    logger.info("id is: " + id);
+  public String deleteNote(@PathVariable int id, Note note) {
     service.delete(id);
-    //        model.addAttribute("notes", service.findAll());
-//    return "redirect:http://localhost:8080/home";
     return "result";
   }
 }

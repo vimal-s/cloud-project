@@ -31,7 +31,6 @@ public class NotesSectionTest {
   public void setUp() throws InterruptedException {
     this.driver = new ChromeDriver();
     login();
-    addNote();
   }
 
   @AfterEach
@@ -42,26 +41,26 @@ public class NotesSectionTest {
   }
 
   @Test
-  public void addedNoteIsDisplayed() throws InterruptedException {
-    driver.get(APP_URL);
+  public void addNoteTest() throws InterruptedException {
+    addNote();
     assertEquals(NOTE_TITLE, notesPage.getSavedNoteTitle());
     assertEquals(NOTE_DESCRIPTION, notesPage.getSavedNoteDescription());
-    notesPage.deleteNote();
+    deleteNote();
   }
 
   @Test
-  public void afterEditNoteIsChanged() throws InterruptedException {
+  public void editNoteTest() throws InterruptedException {
+    addNote();
     editNote();
-    driver.get(APP_URL);
     assertEquals(NOTE_TITLE_2, notesPage.getSavedNoteTitle());
     assertEquals(NOTE_DESCRIPTION_2, notesPage.getSavedNoteDescription());
-    notesPage.deleteNote();
+    deleteNote();
   }
 
   @Test
-  public void afterDeletionNoteIsNotDisplayed() throws InterruptedException {
+  public void deleteNoteTest() throws InterruptedException {
+    addNote();
     deleteNote();
-    driver.get(APP_URL);
     assertThrows(NoSuchElementException.class, notesPage::getSavedNoteTitle);
     assertThrows(NoSuchElementException.class, notesPage::getSavedNoteDescription);
   }
@@ -70,21 +69,25 @@ public class NotesSectionTest {
     driver.get(LOGIN_URL);
     LoginPage loginPage = new LoginPage(driver);
     loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
+    driver.get(APP_URL);
   }
 
   private void addNote() throws InterruptedException {
     driver.get(APP_URL);
     notesPage = new NotesPage(driver);
     notesPage.createNote(NOTE_TITLE, NOTE_DESCRIPTION);
+    driver.get(APP_URL);
   }
 
   private void editNote() throws InterruptedException {
     driver.get(APP_URL);
     notesPage.editNote(NOTE_TITLE_2, NOTE_DESCRIPTION_2);
+    driver.get(APP_URL);
   }
 
   private void deleteNote() throws InterruptedException {
     driver.get(APP_URL);
     notesPage.deleteNote();
+    driver.get(APP_URL);
   }
 }

@@ -15,12 +15,16 @@ import java.util.Base64;
 public class UserService {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
-  private final UserMapper userMapper;
   private final HashService hashService;
+  private final UserMapper userMapper;
 
   public UserService(UserMapper userMapper, HashService hashService) {
     this.userMapper = userMapper;
     this.hashService = hashService;
+  }
+
+  public User find(String username) {
+    return userMapper.find(username);
   }
 
   public void save(User user) {
@@ -29,8 +33,13 @@ public class UserService {
     }
     user.setSalt(getEncodedSalt());
     user.setPassword(hashService.getHashedValue(user.getPassword(), user.getSalt()));
-    logger.info("saving: " + user.toString());
     userMapper.save(user);
+  }
+
+  public int getCurrentUserId() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userMapper.find(username);
+    return user.getId();
   }
 
   private String getEncodedSalt() {
@@ -38,15 +47,5 @@ public class UserService {
     SecureRandom random = new SecureRandom();
     random.nextBytes(bytes);
     return Base64.getEncoder().encodeToString(bytes);
-  }
-
-  public User find(String username) {
-    return userMapper.find(username);
-  }
-
-  public int getCurrentUserId() {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = userMapper.find(username);
-    return user.getId();
   }
 }

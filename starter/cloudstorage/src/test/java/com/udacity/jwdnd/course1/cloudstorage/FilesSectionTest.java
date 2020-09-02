@@ -3,11 +3,24 @@ package com.udacity.jwdnd.course1.cloudstorage;
 import com.udacity.jwdnd.course1.cloudstorage.webpage.FilePage;
 import com.udacity.jwdnd.course1.cloudstorage.webpage.LoginPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +38,12 @@ public class FilesSectionTest {
 
   @BeforeEach
   void setUp() throws InterruptedException {
-    driver = new ChromeDriver();
+    HashMap<String, Object> chromePrefs = new HashMap<>();
+    chromePrefs.put("profile.default_content_settings.popups", 0);
+    chromePrefs.put("download.default_directory", System.getProperty("user.dir"));
+    ChromeOptions options = new ChromeOptions();
+    options.setExperimentalOption("prefs", chromePrefs);
+    driver = new ChromeDriver(options);
     login();
   }
 
@@ -37,20 +55,35 @@ public class FilesSectionTest {
   }
 
   @Test
-  void fileUploadTest() throws InterruptedException {
+  void uploadFileTest() throws InterruptedException, IOException {
     uploadFile();
-    driver.get(APP_URL);
-    assertEquals("Coursera.pdf", filePage.getFileName());
+    assertEquals("test-document.txt", filePage.getFileName());
     deleteFile();
   }
 
   @Test
-  void fileDownloadTest() throws InterruptedException {
-    fail("Not implemented");
+  void downloadFileTest() throws IOException, InterruptedException {
+    uploadFile();
+    downloadFile();
+
+    File folder = new File(System.getProperty("user.dir"));
+    boolean anyMatch = Arrays.stream(folder.listFiles()).anyMatch(file -> {
+      if (file.isFile()) {
+        if (file.getName().equals("test-document.txt")) {
+          file.delete();
+          return true;
+        }
+      }
+      return false;
+    });
+
+    assertTrue(anyMatch, "Downloaded document is not found");
+    deleteFile();
   }
 
+
   @Test
-  void fileDeletionTest() throws InterruptedException {
+  void deleteFileTest() throws InterruptedException, IOException {
     uploadFile();
     deleteFile();
     assertThrows(NoSuchElementException.class, filePage::getFileName);
@@ -60,17 +93,26 @@ public class FilesSectionTest {
     driver.get(LOGIN_URL);
     LoginPage loginPage = new LoginPage(driver);
     loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
+    driver.get(APP_URL);
   }
 
-  private void uploadFile() throws InterruptedException {
+  private void uploadFile() throws InterruptedException, IOException {
     driver.get(APP_URL);
     filePage = new FilePage(driver);
-    // todo: change file path later
-    filePage.upload("D:\\Users\\vimal\\Desktop\\Coursera.pdf");
+    Resource res = new DefaultResourceLoader().getResource("test-document.txt");
+    filePage.upload(Paths.get(res.getURI()).toString());
+    driver.get(APP_URL);
+  }
+
+  private void downloadFile() throws InterruptedException {
+    driver.get(APP_URL);
+    filePage.downloadFile();
+    driver.get(APP_URL);
   }
 
   private void deleteFile() throws InterruptedException {
     driver.get(APP_URL);
-    filePage.delete();
+    filePage.deleteFile();
+    driver.get(APP_URL);
   }
 }

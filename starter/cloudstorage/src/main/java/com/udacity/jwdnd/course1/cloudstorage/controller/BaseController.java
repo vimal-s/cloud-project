@@ -22,8 +22,7 @@ public class BaseController {
   private final NoteService noteService;
   private final CredentialService credentialService;
 
-  public BaseController(
-      FileService fileService, NoteService noteService, CredentialService credentialService) {
+  public BaseController(FileService fileService, NoteService noteService, CredentialService credentialService) {
     this.fileService = fileService;
     this.noteService = noteService;
     this.credentialService = credentialService;

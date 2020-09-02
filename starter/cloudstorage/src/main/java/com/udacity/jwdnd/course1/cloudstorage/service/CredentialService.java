@@ -34,14 +34,14 @@ public class CredentialService {
     credentials.forEach(
         credential ->
             credential.setPassword(
-                encryptionService.decryptValue(credential.getPassword(), credential.getSalt())));
+                encryptionService.decryptValue(credential.getPassword(), credential.getKey())));
     return credentials;
   }
 
   public void save(Credential credential) {
-    credential.setSalt(getSalt());
+    credential.setKey(getSalt());
     String encodedPassword =
-        encryptionService.encryptValue(credential.getPassword(), credential.getSalt());
+        encryptionService.encryptValue(credential.getPassword(), credential.getKey());
     credential.setPassword(encodedPassword);
 
     if (credential.getId() != 0) {
@@ -61,17 +61,14 @@ public class CredentialService {
     credentialMapper.save(credential);
   }
 
+  public void delete(int id) {
+    credentialMapper.delete(id);
+  }
+
   private String getSalt() {
     byte[] salt = new byte[16];
     SecureRandom random = new SecureRandom();
     random.nextBytes(salt);
-    logger.info("salt is: " + Arrays.toString(salt));
-    String encodedSalt = Base64.getEncoder().encodeToString(salt);
-    logger.info("encoded salt: " + encodedSalt);
-    return encodedSalt;
-  }
-
-  public void delete(int id) {
-    credentialMapper.delete(id);
+    return Base64.getEncoder().encodeToString(salt);
   }
 }

@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 public class CredentialsSectionTest {
 
-  private WebDriver driver;
-  private CredentialsPage credentialsPage;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private CredentialsPage credentialsPage;
+  private WebDriver driver;
 
   @BeforeAll
   public static void beforeAll() {
@@ -33,17 +33,7 @@ public class CredentialsSectionTest {
   @BeforeEach
   public void setUp() throws InterruptedException {
     this.driver = new ChromeDriver();
-
-    driver.get(LOGIN_URL);
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
-
-    driver.get(APP_URL);
-    credentialsPage = new CredentialsPage(driver);
-
-    credentialsPage.addCredential(CREDENTIAL_URL, CREDENTIAL_USERNAME, CREDENTIAL_PASSWORD);
-
-    driver.get(APP_URL);
+    login();
   }
 
   @AfterEach
@@ -54,40 +44,56 @@ public class CredentialsSectionTest {
   }
 
   @Test
-  public void addedCredentialGetsDisplayed() throws InterruptedException {
+  public void addCredentialTest() throws InterruptedException {
+    addCredential();
     assertEquals(CREDENTIAL_URL, credentialsPage.getSavedUrl());
     assertEquals(CREDENTIAL_USERNAME, credentialsPage.getSavedUsername());
     assertEquals(CREDENTIAL_PASSWORD, credentialsPage.getSavedPassword());
-
-    credentialsPage.deleteCredential();
+    deleteCredential();
   }
 
   @Test
-  public void editingUpdatesCredential() throws InterruptedException {
-    // todo: should I create a new page here?
-    CredentialsPage credentialsPage = new CredentialsPage(driver);
-
-    credentialsPage.editCredential(CREDENTIAL_URL_2, CREDENTIAL_USERNAME_2, CREDENTIAL_PASSWORD_2);
-
-    driver.get(APP_URL);
-
+  public void editCredentialTest() throws InterruptedException {
+    addCredential();
+    editCredential();
     assertEquals(CREDENTIAL_URL_2, credentialsPage.getSavedUrl());
     assertEquals(CREDENTIAL_USERNAME_2, credentialsPage.getSavedUsername());
     assertEquals(CREDENTIAL_PASSWORD_2, credentialsPage.getSavedPassword());
-
-    credentialsPage.deleteCredential();
+    deleteCredential();
   }
 
   @Test
-  public void deletionRemovesCredential() throws InterruptedException {
-    CredentialsPage credentialsPage = new CredentialsPage(driver);
-
-    credentialsPage.deleteCredential();
-
-    driver.get(APP_URL);
-
+  public void deleteCredentialTest() throws InterruptedException {
+    addCredential();
+    deleteCredential();
     assertThrows(NoSuchElementException.class, credentialsPage::getSavedUrl);
     assertThrows(NoSuchElementException.class, credentialsPage::getSavedUsername);
     assertThrows(NoSuchElementException.class, credentialsPage::getSavedPassword);
+  }
+
+  private void login() throws InterruptedException {
+    driver.get(LOGIN_URL);
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
+    driver.get(APP_URL);
+  }
+
+  private void addCredential() throws InterruptedException {
+    driver.get(APP_URL);
+    credentialsPage = new CredentialsPage(driver);
+    credentialsPage.addCredential(CREDENTIAL_URL, CREDENTIAL_USERNAME, CREDENTIAL_PASSWORD);
+    driver.get(APP_URL);
+  }
+
+  private void editCredential() throws InterruptedException {
+    driver.get(APP_URL);
+    credentialsPage.editCredential(CREDENTIAL_URL_2, CREDENTIAL_USERNAME_2, CREDENTIAL_PASSWORD_2);
+    driver.get(APP_URL);
+  }
+
+  private void deleteCredential() throws InterruptedException {
+    driver.get(APP_URL);
+    credentialsPage.deleteCredential();
+    driver.get(APP_URL);
   }
 }

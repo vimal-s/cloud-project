@@ -7,8 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 
 public class SignupPage {
 
-  private WebDriver driver;
-
   @FindBy(id = "inputFirstName")
   private WebElement firstname;
 
@@ -25,7 +23,6 @@ public class SignupPage {
   private WebElement submitButton;
 
   public SignupPage(WebDriver driver) {
-    this.driver = driver;
     PageFactory.initElements(driver, this);
   }
 

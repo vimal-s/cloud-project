@@ -19,10 +19,8 @@
         <div class="alert alert-dark" th:if="${param.success}">
             You successfully signed up! Please continue to the <a th:href="@{/login}">login</a> page.
         </div>
-        <div class="alert alert-danger" th:if="${exception}">
-
-            <!-- todo: how to display the error message here-->
-            <span th:text="${exception.message}">Example Signup Error Message</span>
+        <div class="alert alert-danger" th:if="${error}">
+            <span th:text="${error}">Example Signup Error Message</span>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">

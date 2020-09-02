@@ -9,25 +9,16 @@ import org.openqa.selenium.support.PageFactory;
 public class CredentialsPage {
 
   @FindBy(css = "#nav-credentials .btn-info")
-  private WebElement addNewCredentialButton;
+  private WebElement addCredentialButton;
+
+  @FindBy(css = "#credentialModal .btn-primary")
+  private WebElement saveCredentialButton;
 
   @FindBy(css = "#credentialTable .btn-success")
   private WebElement editCredentialButton;
 
   @FindBy(css = "#credentialTable .btn-danger")
   private WebElement deleteCredentialButton;
-
-  @FindBy(id = "url")
-  private WebElement savedUrl;
-
-  @FindBy(id = "username")
-  private WebElement savedUsername;
-
-  @FindBy(id = "password")
-  private WebElement savedPassword;
-
-  @FindBy(css = "#credentialModal .btn-primary")
-  private WebElement saveCredentialButton;
 
   @FindBy(id = "credential-url")
   private WebElement url;
@@ -37,6 +28,15 @@ public class CredentialsPage {
 
   @FindBy(id = "credential-password")
   private WebElement password;
+
+  @FindBy(id = "url")
+  private WebElement savedUrl;
+
+  @FindBy(id = "username")
+  private WebElement savedUsername;
+
+  @FindBy(id = "password")
+  private WebElement savedPassword;
 
   private final WebDriver driver;
 
@@ -54,14 +54,13 @@ public class CredentialsPage {
   public void addCredential(String url, String username, String password)
       throws InterruptedException {
     focusToCredentialsPage(driver);
-    addNewCredentialButton.click();
+    addCredentialButton.click();
     Thread.sleep(1000);
     this.url.sendKeys(url);
     this.username.sendKeys(username);
     this.password.sendKeys(password);
     saveCredentialButton.click();
     Thread.sleep(1000);
-//    focusToCredentialsPage(driver);
   }
 
   public void editCredential(String url, String username, String password)
@@ -77,14 +76,12 @@ public class CredentialsPage {
     this.password.sendKeys(password);
     saveCredentialButton.click();
     Thread.sleep(1000);
-//    focusToCredentialsPage(driver);
   }
 
   public void deleteCredential() throws InterruptedException {
     focusToCredentialsPage(driver);
     deleteCredentialButton.click();
     Thread.sleep(1000);
-//    focusToCredentialsPage(driver);
   }
 
   public String getSavedUrl() throws InterruptedException {

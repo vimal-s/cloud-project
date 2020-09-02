@@ -35,9 +35,5 @@ CREATE TABLE IF NOT EXISTS CREDENTIALS (
     foreign key (userid) references USERS(userid)
 );
 
-INSERT
-INTO
-    USERS
-    (username, password, salt, firstname, lastname)
-VALUES
-    ('hello', '8z2xmeWORUUOEuL+OFIfdg==', '5AkcSDgGs+huQ1Dt1EKwog==', 'hello', 'hello');
+INSERT INTO USERS (username, password, salt, firstname, lastname)
+    VALUES ('guest', 'e7r93c7C7n+3SC6kr8XvBQ==', '1zNGjqhs3IK9e00Kj6hM0g==', 'guest', 'guest');
