@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.service;
 
+import com.udacity.jwdnd.course1.cloudstorage.exception.NoteNotFoundException;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class NoteService {
 
   public void save(Note note) {
     if (note.getId() != 0) {
+      checkAuthorisation(note.getId());
       noteMapper.update(note);
       return;
     }
@@ -35,6 +37,16 @@ public class NoteService {
   }
 
   public void delete(int id) {
+    checkAuthorisation(id);
     noteMapper.delete(id);
+  }
+
+  private void checkAuthorisation(int id) {
+    List<Note> notes = noteMapper.findByUserId(userService.getCurrentUserId());
+    boolean noneMatch =
+            notes.stream().noneMatch(noteFromDb -> noteFromDb.getId() == id);
+    if (noneMatch) {
+      throw new NoteNotFoundException();
+    }
   }
 }

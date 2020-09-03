@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
@@ -25,9 +26,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FilesSectionTests {
 
+  @LocalServerPort
+  private Integer port;
+  private String loginUrl;
+  private String appUrl;
   private WebDriver driver;
   private FilePage filePage;
 
@@ -38,6 +43,8 @@ public class FilesSectionTests {
 
   @BeforeEach
   void setUp() throws InterruptedException {
+    loginUrl = DOMAIN + port + LOGIN_ENDPOINT;
+    appUrl = DOMAIN + port + APP_ENDPOINT;
     HashMap<String, Object> chromePrefs = new HashMap<>();
     chromePrefs.put("profile.default_content_settings.popups", 0);
     chromePrefs.put("download.default_directory", System.getProperty("user.dir"));
@@ -90,29 +97,29 @@ public class FilesSectionTests {
   }
 
   private void login() throws InterruptedException {
-    driver.get(LOGIN_URL);
+    driver.get(loginUrl);
     LoginPage loginPage = new LoginPage(driver);
     loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void uploadFile() throws InterruptedException, IOException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     filePage = new FilePage(driver);
     Resource res = new DefaultResourceLoader().getResource("test-document.txt");
     filePage.upload(Paths.get(res.getURI()).toString());
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void downloadFile() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     filePage.downloadFile();
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void deleteFile() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     filePage.deleteFile();
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 }

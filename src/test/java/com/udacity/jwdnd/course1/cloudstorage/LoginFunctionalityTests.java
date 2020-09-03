@@ -11,13 +11,20 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest()
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class LoginFunctionalityTests {
+
+  @LocalServerPort
+  private Integer port;
+  private String signupUrl;
+  private String loginUrl;
+  private String appUrl;
 
   private WebDriver driver;
   private NotesPage notesPage;
@@ -29,6 +36,9 @@ class LoginFunctionalityTests {
 
   @BeforeEach
   public void setUp() {
+    signupUrl = DOMAIN + port + SIGNUP_ENDPOINT;
+    loginUrl = DOMAIN + port + LOGIN_ENDPOINT;
+    appUrl = DOMAIN + port + APP_ENDPOINT;
     this.driver = new ChromeDriver();
   }
 
@@ -41,13 +51,13 @@ class LoginFunctionalityTests {
 
   @Test
   public void requestRedirectionTest() {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     assertEquals(LOGIN_PAGE_TITLE, driver.getTitle());
   }
 
   @Test
   public void signupAccessibilityTest() {
-    driver.get(SIGNUP_URL);
+    driver.get(signupUrl);
     assertEquals(SIGNUP_PAGE_TITLE, driver.getTitle());
   }
 
@@ -72,16 +82,16 @@ class LoginFunctionalityTests {
   }
 
   private void login() throws InterruptedException {
-    driver.get(LOGIN_URL);
+    driver.get(loginUrl);
     LoginPage loginPage = new LoginPage(driver);
     loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void addNote() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     notesPage = new NotesPage(driver);
     notesPage.createNote(NOTE_TITLE, NOTE_DESCRIPTION);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 }

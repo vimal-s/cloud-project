@@ -13,17 +13,23 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CredentialsSectionTests {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
   private CredentialsPage credentialsPage;
   private WebDriver driver;
+
+  @LocalServerPort
+  private Integer port;
+  private String loginUrl;
+  private String appUrl;
 
   @BeforeAll
   public static void beforeAll() {
@@ -32,6 +38,8 @@ public class CredentialsSectionTests {
 
   @BeforeEach
   public void setUp() throws InterruptedException {
+    loginUrl = DOMAIN + port + LOGIN_ENDPOINT;
+    appUrl = DOMAIN + port + APP_ENDPOINT;
     this.driver = new ChromeDriver();
     login();
   }
@@ -72,28 +80,28 @@ public class CredentialsSectionTests {
   }
 
   private void login() throws InterruptedException {
-    driver.get(LOGIN_URL);
+    driver.get(loginUrl);
     LoginPage loginPage = new LoginPage(driver);
     loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void addCredential() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     credentialsPage = new CredentialsPage(driver);
     credentialsPage.addCredential(CREDENTIAL_URL, CREDENTIAL_USERNAME, CREDENTIAL_PASSWORD);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void editCredential() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     credentialsPage.editCredential(CREDENTIAL_URL_2, CREDENTIAL_USERNAME_2, CREDENTIAL_PASSWORD_2);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void deleteCredential() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     credentialsPage.deleteCredential();
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 }

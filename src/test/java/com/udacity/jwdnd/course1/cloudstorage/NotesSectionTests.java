@@ -11,13 +11,19 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NotesSectionTests {
+
+  @LocalServerPort
+  private Integer port;
+  private String loginUrl;
+  private String appUrl;
 
   private WebDriver driver;
   private NotesPage notesPage;
@@ -29,6 +35,8 @@ public class NotesSectionTests {
 
   @BeforeEach
   public void setUp() throws InterruptedException {
+    loginUrl = DOMAIN + port + LOGIN_ENDPOINT;
+    appUrl = DOMAIN + port + APP_ENDPOINT;
     this.driver = new ChromeDriver();
     login();
   }
@@ -66,28 +74,28 @@ public class NotesSectionTests {
   }
 
   private void login() throws InterruptedException {
-    driver.get(LOGIN_URL);
+    driver.get(loginUrl);
     LoginPage loginPage = new LoginPage(driver);
     loginPage.login(LOGIN_USERNAME, LOGIN_PASSWORD);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void addNote() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     notesPage = new NotesPage(driver);
     notesPage.createNote(NOTE_TITLE, NOTE_DESCRIPTION);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void editNote() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     notesPage.editNote(NOTE_TITLE_2, NOTE_DESCRIPTION_2);
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 
   private void deleteNote() throws InterruptedException {
-    driver.get(APP_URL);
+    driver.get(appUrl);
     notesPage.deleteNote();
-    driver.get(APP_URL);
+    driver.get(appUrl);
   }
 }
