@@ -1,9 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.exception.CredentialAlreadyPresentException;
-import com.udacity.jwdnd.course1.cloudstorage.exception.FileAlreadyPresentException;
-import com.udacity.jwdnd.course1.cloudstorage.exception.FileEmptyException;
-import com.udacity.jwdnd.course1.cloudstorage.exception.UserAlreadyPresentException;
+import com.udacity.jwdnd.course1.cloudstorage.exception.*;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +17,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler({
     CredentialAlreadyPresentException.class,
     FileAlreadyPresentException.class,
-    FileEmptyException.class
+    FileEmptyException.class,
+    NoteNotFoundException.class,
+    FileNotFoundException.class,
+    CredentialNotFoundException.class
   })
   public ModelAndView dataProcessingError(RuntimeException e) {
     ModelAndView mav = new ModelAndView();

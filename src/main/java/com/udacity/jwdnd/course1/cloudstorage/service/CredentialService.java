@@ -1,8 +1,11 @@
 package com.udacity.jwdnd.course1.cloudstorage.service;
 
 import com.udacity.jwdnd.course1.cloudstorage.exception.CredentialAlreadyPresentException;
+import com.udacity.jwdnd.course1.cloudstorage.exception.CredentialNotFoundException;
+import com.udacity.jwdnd.course1.cloudstorage.exception.NoteNotFoundException;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.CredentialMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,7 @@ public class CredentialService {
     List<Credential> credentials = credentialMapper.findByUserId(userService.getCurrentUserId());
     credentials.forEach(
         credential ->
-            credential.setPassword(
+            credential.setDecryptedPassword(
                 encryptionService.decryptValue(credential.getPassword(), credential.getKey())));
     return credentials;
   }
@@ -45,6 +48,7 @@ public class CredentialService {
     credential.setPassword(encodedPassword);
 
     if (credential.getId() != 0) {
+      isPresent(credential.getId());
       credentialMapper.update(credential);
       return;
     }
@@ -62,7 +66,17 @@ public class CredentialService {
   }
 
   public void delete(int id) {
+    isPresent(id);
     credentialMapper.delete(id);
+  }
+
+  private void isPresent(int id) {
+    List<Credential> credentials = credentialMapper.findByUserId(userService.getCurrentUserId());
+    boolean noneMatch =
+            credentials.stream().noneMatch(credentialFromDb -> credentialFromDb.getId() == id);
+    if (noneMatch) {
+      throw new CredentialNotFoundException();
+    }
   }
 
   private String getSalt() {

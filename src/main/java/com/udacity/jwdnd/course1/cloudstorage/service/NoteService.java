@@ -27,7 +27,7 @@ public class NoteService {
 
   public void save(Note note) {
     if (note.getId() != 0) {
-      checkAuthorisation(note.getId());
+      isPresent(note.getId());
       noteMapper.update(note);
       return;
     }
@@ -37,11 +37,11 @@ public class NoteService {
   }
 
   public void delete(int id) {
-    checkAuthorisation(id);
+    isPresent(id);
     noteMapper.delete(id);
   }
 
-  private void checkAuthorisation(int id) {
+  private void isPresent(int id) {
     List<Note> notes = noteMapper.findByUserId(userService.getCurrentUserId());
     boolean noneMatch =
             notes.stream().noneMatch(noteFromDb -> noteFromDb.getId() == id);
