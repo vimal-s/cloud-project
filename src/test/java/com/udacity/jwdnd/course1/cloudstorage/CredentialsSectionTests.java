@@ -16,8 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static com.udacity.jwdnd.course1.cloudstorage.Constant.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CredentialsSectionTests {
@@ -56,7 +55,7 @@ public class CredentialsSectionTests {
     addCredential();
     assertEquals(CREDENTIAL_URL, credentialsPage.getSavedUrl());
     assertEquals(CREDENTIAL_USERNAME, credentialsPage.getSavedUsername());
-    assertEquals(CREDENTIAL_PASSWORD, credentialsPage.getSavedPassword());
+    assertNotEquals(CREDENTIAL_PASSWORD, credentialsPage.getSavedPassword());
     deleteCredential();
   }
 
@@ -66,7 +65,7 @@ public class CredentialsSectionTests {
     editCredential();
     assertEquals(CREDENTIAL_URL_2, credentialsPage.getSavedUrl());
     assertEquals(CREDENTIAL_USERNAME_2, credentialsPage.getSavedUsername());
-    assertEquals(CREDENTIAL_PASSWORD_2, credentialsPage.getSavedPassword());
+    assertNotEquals(CREDENTIAL_PASSWORD_2, credentialsPage.getSavedPassword());
     deleteCredential();
   }
 

@@ -31,6 +31,6 @@ public class LoginController {
   @PostMapping("/signup")
   public String saveUser(User user) {
     userService.save(user);
-    return "redirect:/signup?success";
+    return "redirect:/login?signup";
   }
 }

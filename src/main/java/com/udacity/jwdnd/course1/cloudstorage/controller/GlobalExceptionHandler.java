@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ModelAndView fileSizeError(MaxUploadSizeExceededException e) {
     ModelAndView mav = new ModelAndView();
-    mav.addObject("err", "File too large!");
+    mav.addObject("err", "File size exceeds upload limit");
     mav.setViewName("result");
     return mav;
   }
